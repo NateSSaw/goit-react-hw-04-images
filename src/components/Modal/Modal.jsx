@@ -1,25 +1,26 @@
-import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
-export class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.props.onClick);
-  }
+export default function Modal({ closeModal, openedImage: { src, tags } }) {
+  useEffect(() => {
+    window.addEventListener('keydown', closeModal);
+    return () => {
+      window.removeEventListener('keydown', closeModal);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.props.onClick);
-  }
-
-  render() {
-    const {
-      openedImage: { src, tags },
-      onClick,
-    } = this.props;
-    return (
-      <div className="Overlay" onClick={onClick}>
-        <div className="Modal">
-          <img src={src} alt={tags} />
-        </div>
+  return (
+    <div className="Overlay" onClick={closeModal}>
+      <div className="Modal">
+        <img src={src} alt={tags} />
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+Modal.propTypes = {
+  src: PropTypes.string,
+  tags: PropTypes.string,
+  onClick: PropTypes.func,
+};

@@ -1,11 +1,11 @@
 import { Loading } from 'notiflix';
-import { Component } from 'react';
+import { useEffect } from 'react';
 
-export default class Load extends Component {
-  componentWillUnmount() {
-    Loading.remove();
-  }
-  render() {
-    return Loading.standard();
-  }
+export default function Load() {
+  useEffect(() => {
+    return () => {
+      Loading.remove();
+    };
+  });
+  return Loading.circle();
 }
